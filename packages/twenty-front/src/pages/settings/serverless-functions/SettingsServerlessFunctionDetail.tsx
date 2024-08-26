@@ -18,12 +18,15 @@ import { SubMenuTopBarContainer } from '@/ui/layout/page/SubMenuTopBarContainer'
 import { Section } from '@/ui/layout/section/components/Section';
 import { TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
+import { Breadcrumb } from '@/ui/navigation/bread-crumb/components/Breadcrumb';
+import isEmpty from 'lodash.isempty';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { IconCode, IconFunction, IconSettings, IconTestPipe } from 'twenty-ui';
-import { usePreventOverlapCallback } from '~/hooks/usePreventOverlapCallback';
+import { useDebouncedCallback } from 'use-debounce';
 import { isDefined } from '~/utils/isDefined';
+import { convertToEmptyStringForWhitespaces } from '~/utils/string/convertToEmptyStringForWhitespaces';
 
 const TAB_LIST_COMPONENT_ID = 'serverless-function-detail';
 
@@ -72,10 +75,10 @@ export const SettingsServerlessFunctionDetail = () => {
   const handleSave = usePreventOverlapCallback(save, 1000);
 
   const onChange = (key: string) => {
-    return async (value: string | undefined) => {
+    return async (value: string) => {
       setFormValues((prevState) => ({
         ...prevState,
-        [key]: value,
+        [key]: convertToEmptyStringForWhitespaces(value),
       }));
       await handleSave();
     };
