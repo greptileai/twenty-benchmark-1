@@ -27,6 +27,7 @@ import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModa
 import { SubMenuTopBarContainer } from '@/ui/layout/page/SubMenuTopBarContainer';
 import { Section } from '@/ui/layout/section/components/Section';
 import { useGenerateApiKeyTokenMutation } from '~/generated/graphql';
+import { convertToEmptyStringForWhitespaces } from '~/utils/string/convertToEmptyStringForWhitespaces';
 
 const StyledInfo = styled.span`
   color: ${({ theme }) => theme.font.color.light};
@@ -199,8 +200,7 @@ export const SettingsDevelopersApiKeyDetail = () => {
                 apiKeyId={apiKeyData?.id}
                 disabled={loading}
                 onNameUpdate={(value: string) => {
-                  const apiKeyNameValue = value.trim().length ? value : '';
-                  setApiKeyName(apiKeyNameValue);
+                  setApiKeyName(convertToEmptyStringForWhitespaces(value));
                 }}
               />
             </Section>
